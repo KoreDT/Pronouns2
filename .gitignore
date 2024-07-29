@@ -6,3 +6,4 @@ dev_output
 /**/gradle
 /**/run
 .architectury-transformer
+!./gradle/
