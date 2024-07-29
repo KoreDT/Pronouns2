@@ -34,3 +34,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
           files: output/*.jar
+
+    - name: Publish to GitHub packages
+      run: ./gradlew publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
