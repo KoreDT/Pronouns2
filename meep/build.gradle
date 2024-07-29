@@ -5,7 +5,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    maven { url 'https://jitpack.io' }
 }
 
 configurations {
@@ -13,7 +13,8 @@ configurations {
 }
 
 dependencies {
-    compileOnly("net.kore.meep:API:${rootProject.meep_version}")
+    //compileOnly("net.kore.meep:API:${rootProject.meep_version}")
+    compileOnly("com.github.KoreDT.Meep:API:1a081db901")
 
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))
