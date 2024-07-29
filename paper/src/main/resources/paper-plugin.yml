@@ -1,0 +1,8 @@
+name: '${name}'
+version: '${version}'
+main: net.kore.pronouns.paper.PaperPronouns
+api-version: '1.21'
+load: STARTUP
+authors: [ Kore Team ]
+description: '${version}'
+website: '${website}'

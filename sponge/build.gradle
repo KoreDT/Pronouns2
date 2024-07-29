@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sponge-repo'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+}
+
+configurations {
+    shadowCommon
+}
+
+dependencies {
+    compileOnly "org.spongepowered:spongeapi:${rootProject.sponge_version}"
+
+    implementation(shadowCommon(project(path: ":common")))
+    implementation(shadowCommon(project(path: ":API")))
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    setArchiveClassifier("")
+    destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+processResources {
+    def props = [
+            version: version,
+            name: rootProject.modin_name,
+            id: rootProject.modin_id,
+            description: rootProject.modin_description,
+            website: rootProject.modin_website,
+            source: rootProject.modin_source,
+            issues: rootProject.modin_issues
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('META-INF/sponge_plugins.json') {
+        expand props
+    }
+}

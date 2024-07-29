@@ -1,0 +1,5 @@
+name: '${name}'
+version: '${version}'
+main: net.kore.pronouns.bungeecord.BungeecordPronouns
+author: Kore Team
+description: '${description}'

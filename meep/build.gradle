@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+configurations {
+    shadowCommon
+}
+
+dependencies {
+    compileOnly("net.kore.meep:API:${rootProject.meep_version}")
+
+    implementation(shadowCommon(project(path: ":common")))
+    implementation(shadowCommon(project(path: ":API")))
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    setArchiveClassifier("")
+    destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+processResources {
+    def props = [
+            version: version,
+            name: rootProject.modin_version,
+            description: rootProject.modin_description
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('meepling.json') {
+        expand props
+    }
+}

@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(path: ":API"))
+    implementation("com.google.guava:guava:33.2.1-jre")
+    implementation 'com.google.code.gson:gson:2.11.0'
+}
+
+jar {
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
+}

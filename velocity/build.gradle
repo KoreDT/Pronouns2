@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+    id "dev.anies.gradle.template" version "0.0.2"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+configurations {
+    shadowCommon
+}
+
+dependencies {
+    compileOnly("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
+
+    implementation(shadowCommon(project(path: ":common")))
+    implementation(shadowCommon(project(path: ":API")))
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    setArchiveClassifier("")
+    destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+def templateSource = file('src/main/java')
+def templateDest = layout.buildDirectory.dir('generatedJavaSrc')
+def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
+    def props = [
+            'version': project.version,
+            'name': rootProject.modin_name,
+            'id': rootProject.modin_id,
+            'description': rootProject.modin_description,
+            'website': rootProject.modin_website
+    ]
+    task.inputs.properties props
+
+    task.from templateSource
+    task.into templateDest
+    task.expand props
+}
+
+sourceSets.main.java.srcDirs = ["src/main/java"]
+
+compileJava.dependsOn(generateTemplates)
+compileJava.mustRunAfter(generateTemplates)
+compileJava.doFirst {
+    sourceSets.main.java.srcDirs = ["build/generatedJavaSrc"]
+}
+compileJava.doLast {
+    sourceSets.main.java.srcDirs = ["src/main/java"]
+}

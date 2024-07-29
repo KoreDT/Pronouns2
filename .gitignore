@@ -1,0 +1,8 @@
+.gradle
+.idea
+build
+output
+dev_output
+/**/gradle
+/**/run
+.architectury-transformer

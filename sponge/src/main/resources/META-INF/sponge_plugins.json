@@ -1,0 +1,39 @@
+{
+	"loader": {
+		"name": "java_plain",
+		"version": "1.0"
+	},
+	"license": "GPL-3.0",
+	"global": {
+		"version": "${version}",
+		"links": {
+			"homepage": "${website}",
+			"source": "${source}",
+			"issues": "${issues}"
+		},
+		"contributors": [
+			{
+				"name": "Kore Team",
+				"description": "Developers"
+			},
+			{
+				"name": "Nova",
+				"description": "Lead Developer"
+			}
+		],
+		"dependencies": [
+			{
+				"id": "spongeapi",
+				"version": "12.0.0"
+			}
+		]
+	},
+	"plugins": [
+		{
+			"id": "${id}",
+			"name": "${name}",
+			"entrypoint": "net.kore.pronouns.sponge.SpongePronouns",
+			"description": "${description}"
+		}
+	]
+}
