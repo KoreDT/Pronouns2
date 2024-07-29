@@ -24,11 +24,8 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
 
-    - name: Make Gradle Wrapper executible
-      run: chmod +x gradlew
-
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: chmod +x gradlew && ./gradlew build
 
     - name: Publish to GitHub releases
       uses: softprops/action-gh-release@v2
