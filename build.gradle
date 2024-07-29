@@ -35,7 +35,11 @@ subprojects {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
         def aname = project.name.capitalize()
         if (aname == "Neoforge") aname = "NeoForge"
-        archivesName = "$rootProject.modin_name-$aname"
+        if (version.contains("SNAPSHOT")) {
+            archivesName = "$rootProject.modin_name-$aname-DEV-"
+        } else {
+            archivesName = "$rootProject.modin_name-$aname"
+        }
     }
 
     repositories {
