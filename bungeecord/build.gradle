@@ -22,6 +22,9 @@ configurations {
 dependencies {
     compileOnly("net.md-5:bungeecord-api:1.21-R0.1-SNAPSHOT")
 
+    implementation(shadowCommon("net.kyori:adventure-platform-bungeecord:4.3.3"))
+    implementation(shadowCommon("net.kyori:adventure-text-minimessage:4.17.0"))
+
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))
 }
@@ -41,5 +44,23 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('bungee.yml') {
         expand props
+    }
+}
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = shadowJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["bungeecord", "waterfall"]
+    dependencies {
+
     }
 }

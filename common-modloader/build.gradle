@@ -2,6 +2,13 @@ architectury {
     common rootProject.enabled_architectury_platforms.split(',')
 }
 
+repositories {
+    maven {
+        url "https://maven.minecraftforge.net/"
+        content { excludeGroup "com.github.jpenilla.adventure-platform-fabric" }
+    }
+}
+
 dependencies {
     // We depend on Fabric Loader here to use the Fabric @Environment annotations,
     // which get remapped to the correct annotations on each platform.
@@ -12,4 +19,14 @@ dependencies {
 
     implementation project(path: ":common")
     implementation project(path: ":API")
+}
+
+jar {
+    archiveClassifier = 'dev'
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
+}
+
+remapJar {
+    input.set jar.archiveFile
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
 }

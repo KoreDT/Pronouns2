@@ -1,0 +1,6 @@
+{
+	"entrance": "net.kore.pronouns.allay.AllayPronouns",
+	"name": "${name}",
+	"authors": ["Kore Team", "Nova"],
+	"version": "${version}"
+}

@@ -31,10 +31,15 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
 
+    modImplementation include("net.kyori:adventure-platform-fabric:5.14.1")
+
+    modImplementation include("me.lucko:fabric-permissions-api:0.3.1")
+
     common(project(configuration: 'namedElements', path: ':common-modloader')) { transitive false }
     shadowBundle project(configuration: 'transformProductionFabric', path: ':common-modloader')
     common(shadowBundle(project(path: ":common")))
     common(shadowBundle(project(path: ":API")))
+    common(shadowBundle("net.kyori:adventure-text-minimessage:4.17.0"))
 }
 
 processResources {
@@ -45,7 +50,11 @@ processResources {
             description: rootProject.modin_description,
             website: rootProject.modin_website,
             issues: rootProject.modin_issues,
-            source: rootProject.modin_source
+            source: rootProject.modin_source,
+            license: rootProject.modin_license,
+            minecraft: rootProject.minecraft_version,
+            fabric: rootProject.fabric_loader_version,
+            architectury: rootProject.architectury_api_version
     ]
     inputs.properties props
     filteringCharset 'UTF-8'
@@ -54,12 +63,37 @@ processResources {
     }
 }
 
+jar {
+    archiveClassifier = 'dev'
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
+}
+
 shadowJar {
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = remapJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["fabric", "quilt"]
+    dependencies {
+        required.project "fabric-api"
+        required.project "architectury-api"
+    }
 }

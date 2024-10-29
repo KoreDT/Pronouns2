@@ -47,3 +47,21 @@ processResources {
         expand props
     }
 }
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = shadowJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["paper", "purpur"]
+    dependencies {
+
+    }
+}

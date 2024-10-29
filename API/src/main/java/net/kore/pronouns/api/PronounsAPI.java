@@ -8,10 +8,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class PronounsAPI {
     public static CompletableFuture<AccountData> getPronounDBAccount(UUID uuid) {
-        return InstanceHolder.getPlatformProvider().getPronounDBAccount(uuid);
+        return InstanceHolder.getPlatformProvider().getPronounAccount(uuid);
     }
 
     public static CompletableFuture<List<AccountData>> getPronounDBAccounts(UUID... uuids) {
-        return InstanceHolder.getPlatformProvider().getPronounDBAccounts(uuids);
+        return InstanceHolder.getPlatformProvider().getPronounAccounts(uuids);
     }
 }

@@ -1,17 +1,33 @@
 plugins {
     id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
 }
 
 repositories {
     mavenCentral()
 }
 
+configurations {
+    shadow
+}
+
 dependencies {
-    implementation(project(path: ":API"))
+    shadow(project(path: ":API"))
+    shadow "org.spongepowered:configurate-hocon:4.1.2"
     implementation("com.google.guava:guava:33.2.1-jre")
     implementation 'com.google.code.gson:gson:2.11.0'
+    compileOnly 'net.luckperms:api:5.4'
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    setArchiveClassifier("dev-shadow")
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
 }
 
 jar {
+    setArchiveClassifier("dev")
     destinationDirectory = file("$rootProject.rootDir/dev_output")
 }

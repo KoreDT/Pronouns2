@@ -25,6 +25,8 @@ dependencies {
 
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))
+
+    compileOnly 'net.luckperms:api:5.4'
 }
 
 tasks.build.dependsOn tasks.shadowJar
@@ -61,4 +63,22 @@ compileJava.doFirst {
 }
 compileJava.doLast {
     sourceSets.main.java.srcDirs = ["src/main/java"]
+}
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = shadowJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["velocity", "waterfall"]
+    dependencies {
+
+    }
 }

@@ -3,7 +3,7 @@
 		"name": "java_plain",
 		"version": "1.0"
 	},
-	"license": "GPL-3.0",
+	"license": "${license}",
 	"global": {
 		"version": "${version}",
 		"links": {

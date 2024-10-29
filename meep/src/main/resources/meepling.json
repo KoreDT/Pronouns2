@@ -1,6 +1,6 @@
 {
 	"name": "${name}",
 	"description": "${description}",
-	"main": "",
+	"main": "net.kore.pronouns.meep.MeeplingPronouns",
 	"version": "${version}"
 }

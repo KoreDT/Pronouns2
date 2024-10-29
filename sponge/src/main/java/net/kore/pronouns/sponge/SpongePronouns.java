@@ -4,23 +4,26 @@ import com.google.inject.Inject;
 import net.kore.pronouns.api.InstanceHolder;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.api.Server;
+import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.ConstructPluginEvent;
 import org.spongepowered.api.event.lifecycle.StartingEngineEvent;
 import org.spongepowered.plugin.builtin.jvm.Plugin;
 
-/**
- * The main class of your Sponge plugin.
- *
- * <p>All methods are optional -- some common event registrations are included as a jumping-off point.</p>
- */
+import java.nio.file.Path;
+
 @Plugin("pronouns")
 public class SpongePronouns {
-    private final Logger logger;
+    protected static SpongePronouns INSTANCE;
+
+    public final Logger logger;
+    public final Path dataDirectory;
 
     @Inject
-    SpongePronouns(Logger logger) {
+    SpongePronouns(Logger logger, @ConfigDir(sharedRoot = true) Path dataDirectory) {
         this.logger = logger;
+        this.dataDirectory = dataDirectory;
+        INSTANCE = this;
     }
 
     @Listener

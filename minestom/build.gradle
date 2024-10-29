@@ -16,36 +16,18 @@ dependencies {
 
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))
+    implementation(shadowCommon("net.kyori:adventure-text-minimessage:4.17.0"))
 }
 
 tasks.build.dependsOn tasks.shadowJar
+
+jar {
+    setArchiveClassifier("dev")
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
+}
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
     setArchiveClassifier("")
     destinationDirectory = file("$rootProject.rootDir/output")
-}
-
-def templateSource = file('src/main/java')
-def templateDest = layout.buildDirectory.dir('generatedJavaSrc')
-def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
-    def props = [
-            'version': project.version
-    ]
-    task.inputs.properties props
-
-    task.from templateSource
-    task.into templateDest
-    task.expand props
-}
-
-sourceSets.main.java.srcDirs = ["src/main/java"]
-
-compileJava.dependsOn(generateTemplates)
-compileJava.mustRunAfter(generateTemplates)
-compileJava.doFirst {
-    sourceSets.main.java.srcDirs = ["build/generatedJavaSrc"]
-}
-compileJava.doLast {
-    sourceSets.main.java.srcDirs = ["src/main/java"]
 }

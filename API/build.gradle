@@ -1,16 +1,55 @@
 plugins {
     id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
 }
 
 repositories {
     mavenCentral()
+}
 
+configurations {
+    shadow
 }
 
 dependencies {
-
+    shadow "org.spongepowered:configurate-hocon:4.1.2"
 }
 
-jar {
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    archiveClassifier = ''
     destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+def templateSource = file('src/main/java')
+def templateDest = layout.buildDirectory.dir('generatedJavaSrc')
+def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
+    def props = [
+            'version': project.version,
+            'name': rootProject.modin_name,
+            'id': rootProject.modin_id,
+            'description': rootProject.modin_description,
+            'website': rootProject.modin_website,
+            'source': rootProject.modin_source,
+            'issues': rootProject.modin_issues,
+            'license': rootProject.modin_license
+    ]
+    task.inputs.properties props
+
+    task.from templateSource
+    task.into templateDest
+    task.expand props
+}
+
+sourceSets.main.java.srcDirs = ["src/main/java"]
+
+compileJava.dependsOn(generateTemplates)
+compileJava.mustRunAfter(generateTemplates)
+compileJava.doFirst {
+    sourceSets.main.java.srcDirs = ["build/generatedJavaSrc"]
+}
+compileJava.doLast {
+    sourceSets.main.java.srcDirs = ["src/main/java"]
 }

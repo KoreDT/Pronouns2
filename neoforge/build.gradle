@@ -26,6 +26,11 @@ configurations {
 
 repositories {
     maven {
+        name = 'JitPack'
+        url 'https://jitpack.io'
+        content { includeGroup "com.github.Novampr.adventure-platform-fabric" }
+    }
+    maven {
         name = 'NeoForged'
         url = 'https://maven.neoforged.net/releases'
     }
@@ -35,12 +40,14 @@ dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
 
     modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+    modImplementation include("net.kyori:adventure-platform-neoforge:6.0.0")
 
     common(project(configuration: 'namedElements', path: ':common-modloader')) { transitive false }
     shadowBundle project(configuration: 'transformProductionNeoForge', path: ':common-modloader')
 
     common(shadowBundle(project(path: ":common")))
     common(shadowBundle(project(path: ":API")))
+    common(shadowBundle("net.kyori:adventure-text-minimessage:4.17.0"))
 }
 
 processResources {
@@ -50,7 +57,11 @@ processResources {
             name: rootProject.modin_version,
             description: rootProject.modin_description,
             website: rootProject.modin_website,
-            issues: rootProject.modin_issues
+            issues: rootProject.modin_issues,
+            license: rootProject.modin_license,
+            minecraft: rootProject.minecraft_version,
+            neoforge: rootProject.neoforge_version,
+            architectury: rootProject.architectury_api_version
     ]
     inputs.properties props
     filteringCharset 'UTF-8'
@@ -59,12 +70,36 @@ processResources {
     }
 }
 
+jar {
+    archiveClassifier = 'dev'
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
+}
+
 shadowJar {
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
+    destinationDirectory = file("$rootProject.rootDir/dev_output")
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     destinationDirectory = file("$rootProject.rootDir/output")
+}
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = remapJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["neoforge"]
+    dependencies {
+        required.project "architectury-api"
+    }
 }

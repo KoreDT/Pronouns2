@@ -1,0 +1,8 @@
+name: ${name}
+version: ${version}
+api: ["2.0.0"]
+description: ${description}
+author: Kore Team
+website: ${website}
+
+main: net.kore.pronouns.nukkkit.NukkitPronouns

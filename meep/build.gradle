@@ -13,8 +13,7 @@ configurations {
 }
 
 dependencies {
-    //compileOnly("net.kore.meep:API:${rootProject.meep_version}")
-    compileOnly("com.github.KoreDT.Meep:API:1a081db901")
+    compileOnly("com.github.KoreDT.Meep:API:${rootProject.meep_version}")
 
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))

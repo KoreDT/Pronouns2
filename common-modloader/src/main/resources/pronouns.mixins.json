@@ -1,9 +1,11 @@
 {
 	"required": true,
-	"package": "net.kore.pronouns.mixin",
+	"package": "net.kore.pronouns.common.modloader.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"minVersion": "0.8",
 	"client": [
+		"SocialInteractionsPlayerListAccessor",
+		"SocialInteractionsPlayerListMixin"
 	],
 	"mixins": [
 	],

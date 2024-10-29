@@ -5,14 +5,15 @@
 	"name": "${name}",
 	"description": "${description}",
 	"authors": [
-		"Kore Team"
+		"Kore Team",
+		"Nova"
 	],
 	"contact": {
 		"homepage": "${website}",
 		"sources": "${source}",
 		"issues": "${issues}"
 	},
-	"license": "GPL-3.0",
+	"license": "${license}",
 	"icon": "assets/pronouns/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -24,10 +25,11 @@
 		"pronouns.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.0",
-		"minecraft": "~1.21",
+		"fabricloader": ">=${fabric}",
+		"minecraft": "~${minecraft}",
 		"java": ">=21",
-		"architectury": ">=12.1.4",
-		"fabric-api": "*"
+		"architectury": ">=${architectury}",
+		"fabric-api": "*",
+		"fabric-permissions-api-v0": "*"
 	}
 }

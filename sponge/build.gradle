@@ -20,6 +20,8 @@ dependencies {
 
     implementation(shadowCommon(project(path: ":common")))
     implementation(shadowCommon(project(path: ":API")))
+
+    compileOnly 'net.luckperms:api:5.4'
 }
 
 tasks.build.dependsOn tasks.shadowJar
@@ -38,11 +40,30 @@ processResources {
             description: rootProject.modin_description,
             website: rootProject.modin_website,
             source: rootProject.modin_source,
-            issues: rootProject.modin_issues
+            issues: rootProject.modin_issues,
+            license: rootProject.modin_license
     ]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('META-INF/sponge_plugins.json') {
         expand props
+    }
+}
+
+def vt = "release"
+if (version.toString().contains("SNAPSHOT")) {
+    vt = "beta"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "kore-pronouns"
+    versionNumber = version
+    versionType = vt
+    uploadFile = shadowJar
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["sponge"]
+    dependencies {
+
     }
 }
